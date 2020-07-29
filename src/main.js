@@ -9,7 +9,7 @@ const createSiteMenuTemplate = () => {
     );
   };
 
-  const createSiteFiltersTemplate = () => {
+const createSiteFiltersTemplate = () => {
     return (
       `<form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
@@ -32,6 +32,35 @@ const createSiteMenuTemplate = () => {
       );
     };
 
+const createSortingTemplate = () => {
+      return (
+        `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+        <span class="trip-sort__item  trip-sort__item--day"></span>
+
+        <div class="trip-sort__item  trip-sort__item--event">
+          <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event">
+          <label class="trip-sort__btn" for="sort-event">Event</label>
+        </div>
+
+        <div class="trip-sort__item  trip-sort__item--time">
+          <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time" checked>
+          <label class="trip-sort__btn  trip-sort__btn--active  trip-sort__btn--by-increase" for="sort-time">
+            Time
+          </label>
+        </div>
+
+        <div class="trip-sort__item  trip-sort__item--price">
+          <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price">
+          <label class="trip-sort__btn" for="sort-price">
+            Price
+          </label>
+        </div>
+
+        <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
+      </form>`
+        );
+      };
+
 const render = (container, template, place) => {
     container.insertAdjacentHTML(place, template);
   };
@@ -40,6 +69,9 @@ const siteHeaderElement = document.querySelector(`.page-header`);
 const siteControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
 const menuHeadingElement = siteControlsElement.querySelector(`h2:first-child`);
 const filtersHeadingElement = siteControlsElement.querySelector(`h2:nth-child(2)`);
+const siteMainElement = document.querySelector(`.page-main`);
+const eventsContainerElement = siteMainElement.querySelector(`.trip-events`);
 
 render(menuHeadingElement, createSiteMenuTemplate(), `afterend`);
 render(filtersHeadingElement, createSiteFiltersTemplate(), `afterend`);
+render(eventsContainerElement, createSortingTemplate(), `beforeend`);
