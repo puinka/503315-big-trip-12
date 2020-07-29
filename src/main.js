@@ -11,7 +11,7 @@ const eventsContainerElement = siteMainElement.querySelector(`.trip-events`);
 const tripSummaryContainer = siteMainElement.querySelector(`.trip-events`);
 const eventsHeadingElement = siteHeaderElement.querySelector(`.trip-main`);
 
-const render = (container, template, place) => {
+const render = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
@@ -285,7 +285,7 @@ render(eventsHeadingElement, createTripInfoContainerTemplate(), `afterbegin`);
 
 const tripInfoContainer = eventsHeadingElement.querySelector('.trip-info');
 render(tripInfoContainer, createTripSummaryTemplate(), `afterbegin`);
-render(tripInfoContainer, createTripTotalPriceTemplate(), `beforeend`);
+render(tripInfoContainer, createTripTotalPriceTemplate());
 
 render(menuHeadingElement, createSiteMenuTemplate(), `afterend`);
 render(filtersHeadingElement, createSiteFiltersTemplate(), `afterend`);
@@ -296,10 +296,10 @@ render(eventsContainerElement, createSortingTemplate(), `afterbegin`);
 const sortingForm = eventsContainerElement.querySelector(`.trip-sort`);
 render(sortingForm, createEventEditTemplate(), `afterend`);
 
-render(eventsContainerElement, createTripDaysContainerTemplate(), `beforeend`);
+render(eventsContainerElement, createTripDaysContainerTemplate());
 
 const tripDaysList = eventsContainerElement.querySelector(`.trip-days`);
-render(tripDaysList, createDayItemTemplate(), `beforeend`);
+render(tripDaysList, createDayItemTemplate());
 
 const dayInfoElement = eventsContainerElement.querySelector(`.day__info`);
 render(dayInfoElement, createEventListTemplate(), `afterend`);
@@ -307,5 +307,5 @@ render(dayInfoElement, createEventListTemplate(), `afterend`);
 const eventsListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
 for (let i = 0; i < EVENT_COUNT; i++) {
-  render(eventsListElement, createEventItemTemplate(), `beforeend`);
+  render(eventsListElement, createEventItemTemplate());
 }
