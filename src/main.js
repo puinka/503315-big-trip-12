@@ -4,8 +4,6 @@ const EVENT_COUNT = 3;
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
-// const menuHeadingElement = siteControlsElement.querySelector(`h2:first-child`);
-//const filtersHeadingElement = siteControlsElement.querySelector(`h2:nth-child(2)`);
 const siteMainElement = document.querySelector(`.page-main`);
 const eventsContainerElement = siteMainElement.querySelector(`.trip-events`);
 const eventsHeadingElement = siteHeaderElement.querySelector(`.trip-main`);
