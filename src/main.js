@@ -8,7 +8,6 @@ const menuHeadingElement = siteControlsElement.querySelector(`h2:first-child`);
 const filtersHeadingElement = siteControlsElement.querySelector(`h2:nth-child(2)`);
 const siteMainElement = document.querySelector(`.page-main`);
 const eventsContainerElement = siteMainElement.querySelector(`.trip-events`);
-const tripSummaryContainer = siteMainElement.querySelector(`.trip-events`);
 const eventsHeadingElement = siteHeaderElement.querySelector(`.trip-main`);
 
 const render = (container, template, place = `beforeend`) => {
@@ -21,12 +20,12 @@ const createSiteMenuTemplate = () => {
       <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
       <a class="trip-tabs__btn" href="#">Stats</a>
     </nav>`
-    );
+  );
 };
 
 const createSiteFiltersTemplate = () => {
-    return (
-      `<form class="trip-filters" action="#" method="get">
+  return (
+    `<form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
         <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
         <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
@@ -44,12 +43,12 @@ const createSiteFiltersTemplate = () => {
 
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`
-      );
+  );
 };
 
 const createSortingTemplate = () => {
-      return (
-        `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+  return (
+    `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
         <span class="trip-sort__item  trip-sort__item--day"></span>
 
         <div class="trip-sort__item  trip-sort__item--event">
@@ -73,7 +72,7 @@ const createSortingTemplate = () => {
 
         <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
       </form>`
-        );
+  );
 };
 
 const createEventEditTemplate = () => {
@@ -185,7 +184,7 @@ const createEventEditTemplate = () => {
       <button class="event__reset-btn" type="reset">Cancel</button>
     </header>
   </form>`
-    );
+  );
 };
 
 const createTripDaysContainerTemplate = () => {
@@ -193,7 +192,7 @@ const createTripDaysContainerTemplate = () => {
     `<ul class="trip-days">
 
     </ul>`
-    );
+  );
 };
 
 const createDayItemTemplate = () => {
@@ -204,7 +203,7 @@ const createDayItemTemplate = () => {
         <time class="day__date" datetime="2019-03-18">MAR 18</time>
       </div>
     </li>`
-    );
+  );
 };
 
 const createEventListTemplate = () => {
@@ -212,7 +211,7 @@ const createEventListTemplate = () => {
     `<ul class="trip-events__list">
 
     </ul>`
-    );
+  );
 };
 
 const createEventItemTemplate = () => {
@@ -251,7 +250,7 @@ const createEventItemTemplate = () => {
       </button>
     </div>
   </li>`
-    );
+  );
 };
 
 const createTripInfoContainerTemplate = () => {
@@ -259,7 +258,7 @@ const createTripInfoContainerTemplate = () => {
     `<section class="trip-main__trip-info  trip-info">
 
     </section>`
-    );
+  );
 };
 
 const createTripSummaryTemplate = () => {
@@ -269,7 +268,7 @@ const createTripSummaryTemplate = () => {
 
       <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
     </div>`
-    );
+  );
 };
 
 const createTripTotalPriceTemplate = () => {
@@ -277,13 +276,13 @@ const createTripTotalPriceTemplate = () => {
     `<p class="trip-info__cost">
       Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
     </p>`
-    );
+  );
 };
 
 
 render(eventsHeadingElement, createTripInfoContainerTemplate(), `afterbegin`);
 
-const tripInfoContainer = eventsHeadingElement.querySelector('.trip-info');
+const tripInfoContainer = eventsHeadingElement.querySelector(`.trip-info`);
 render(tripInfoContainer, createTripSummaryTemplate(), `afterbegin`);
 render(tripInfoContainer, createTripTotalPriceTemplate());
 
