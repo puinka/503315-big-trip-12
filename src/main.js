@@ -4,8 +4,8 @@ const EVENT_COUNT = 3;
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
-const menuHeadingElement = siteControlsElement.querySelector(`h2:first-child`);
-const filtersHeadingElement = siteControlsElement.querySelector(`h2:nth-child(2)`);
+// const menuHeadingElement = siteControlsElement.querySelector(`h2:first-child`);
+//const filtersHeadingElement = siteControlsElement.querySelector(`h2:nth-child(2)`);
 const siteMainElement = document.querySelector(`.page-main`);
 const eventsContainerElement = siteMainElement.querySelector(`.trip-events`);
 const eventsHeadingElement = siteHeaderElement.querySelector(`.trip-main`);
@@ -16,7 +16,8 @@ const render = (container, template, place = `beforeend`) => {
 
 const createSiteMenuTemplate = () => {
   return (
-    `<nav class="trip-controls__trip-tabs  trip-tabs">
+    `<h2 class="visually-hidden">Switch trip view</h2>
+    <nav class="trip-controls__trip-tabs  trip-tabs">
       <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
       <a class="trip-tabs__btn" href="#">Stats</a>
     </nav>`
@@ -25,7 +26,8 @@ const createSiteMenuTemplate = () => {
 
 const createSiteFiltersTemplate = () => {
   return (
-    `<form class="trip-filters" action="#" method="get">
+    `<h2 class="visually-hidden">Filter events</h2>
+    <form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
         <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
         <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
@@ -183,6 +185,73 @@ const createEventEditTemplate = () => {
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Cancel</button>
     </header>
+    <section class="event__details">
+              <section class="event__section  event__section--offers">
+                <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+
+                <div class="event__available-offers">
+                  <div class="event__offer-selector">
+                    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
+                    <label class="event__offer-label" for="event-offer-luggage-1">
+                      <span class="event__offer-title">Add luggage</span>
+                      &plus;
+                      &euro;&nbsp;<span class="event__offer-price">30</span>
+                    </label>
+                  </div>
+
+                  <div class="event__offer-selector">
+                    <input class="event__offer-checkbox  visually-hidden" id="event-offer-comfort-1" type="checkbox" name="event-offer-comfort" checked>
+                    <label class="event__offer-label" for="event-offer-comfort-1">
+                      <span class="event__offer-title">Switch to comfort class</span>
+                      &plus;
+                      &euro;&nbsp;<span class="event__offer-price">100</span>
+                    </label>
+                  </div>
+
+                  <div class="event__offer-selector">
+                    <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal">
+                    <label class="event__offer-label" for="event-offer-meal-1">
+                      <span class="event__offer-title">Add meal</span>
+                      &plus;
+                      &euro;&nbsp;<span class="event__offer-price">15</span>
+                    </label>
+                  </div>
+
+                  <div class="event__offer-selector">
+                    <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats">
+                    <label class="event__offer-label" for="event-offer-seats-1">
+                      <span class="event__offer-title">Choose seats</span>
+                      &plus;
+                      &euro;&nbsp;<span class="event__offer-price">5</span>
+                    </label>
+                  </div>
+
+                  <div class="event__offer-selector">
+                    <input class="event__offer-checkbox  visually-hidden" id="event-offer-train-1" type="checkbox" name="event-offer-train">
+                    <label class="event__offer-label" for="event-offer-train-1">
+                      <span class="event__offer-title">Travel by train</span>
+                      &plus;
+                      &euro;&nbsp;<span class="event__offer-price">40</span>
+                    </label>
+                  </div>
+                </div>
+              </section>
+
+              <section class="event__section  event__section--destination">
+                <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+                <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+
+                <div class="event__photos-container">
+                  <div class="event__photos-tape">
+                    <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
+                    <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
+                    <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
+                    <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
+                    <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+                  </div>
+                </div>
+              </section>
+            </section>
   </form>`
   );
 };
@@ -286,8 +355,8 @@ const tripInfoContainer = eventsHeadingElement.querySelector(`.trip-info`);
 render(tripInfoContainer, createTripSummaryTemplate(), `afterbegin`);
 render(tripInfoContainer, createTripTotalPriceTemplate());
 
-render(menuHeadingElement, createSiteMenuTemplate(), `afterend`);
-render(filtersHeadingElement, createSiteFiltersTemplate(), `afterend`);
+render(siteControlsElement, createSiteMenuTemplate());
+render(siteControlsElement, createSiteFiltersTemplate());
 
 
 render(eventsContainerElement, createSortingTemplate(), `afterbegin`);
