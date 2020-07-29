@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Valeria Vozzheva](https://up.htmlacademy.ru/ecmascript/12/user/503315).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Рябинин](https://up.htmlacademy.ru/ecmascript/12/user/63289).
 
 ---
 
