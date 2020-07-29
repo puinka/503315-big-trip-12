@@ -8,7 +8,8 @@ const menuHeadingElement = siteControlsElement.querySelector(`h2:first-child`);
 const filtersHeadingElement = siteControlsElement.querySelector(`h2:nth-child(2)`);
 const siteMainElement = document.querySelector(`.page-main`);
 const eventsContainerElement = siteMainElement.querySelector(`.trip-events`);
-const eventsHeadingElement = eventsContainerElement.querySelector(`h2:first-child`);
+const tripSummaryContainer = siteMainElement.querySelector(`.trip-events`);
+const eventsHeadingElement = siteHeaderElement.querySelector(`.trip-main`);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -253,10 +254,49 @@ const createEventItemTemplate = () => {
     );
   };
 
+const createTripInfoContainerTemplate = () => {
+  return (
+    `<section class="trip-main__trip-info  trip-info">
+
+    </section>`
+    );
+  };
+
+const createTripSummaryTemplate = () => {
+  return (
+    `<div class="trip-info__main">
+      <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
+
+      <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
+    </div>`
+    );
+  };
+
+const createTripTotalPriceTemplate = () => {
+  return (
+    `<p class="trip-info__cost">
+      Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
+    </p>`
+    );
+  };
+
+
+
+
+render(eventsHeadingElement, createTripInfoContainerTemplate(), `afterbegin`);
+
+const tripInfoContainer = eventsHeadingElement.querySelector('.trip-info');
+render(tripInfoContainer, createTripSummaryTemplate(), `afterbegin`);
+render(tripInfoContainer, createTripTotalPriceTemplate(), `beforeend`);
+
 render(menuHeadingElement, createSiteMenuTemplate(), `afterend`);
 render(filtersHeadingElement, createSiteFiltersTemplate(), `afterend`);
+
+
 render(eventsContainerElement, createSortingTemplate(), `afterbegin`);
-render(eventsHeadingElement, createEventEditTemplate(), `afterend`);
+
+const sortingForm = eventsContainerElement.querySelector(`.trip-sort`);
+render(sortingForm, createEventEditTemplate(), `afterend`);
 
 render(eventsContainerElement, createTripDaysContainerTemplate(), `beforeend`);
 
