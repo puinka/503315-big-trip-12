@@ -22,7 +22,7 @@ const createSiteMenuTemplate = () => {
       <a class="trip-tabs__btn" href="#">Stats</a>
     </nav>`
     );
-  };
+};
 
 const createSiteFiltersTemplate = () => {
     return (
@@ -45,7 +45,7 @@ const createSiteFiltersTemplate = () => {
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`
       );
-    };
+};
 
 const createSortingTemplate = () => {
       return (
@@ -74,7 +74,7 @@ const createSortingTemplate = () => {
         <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
       </form>`
         );
-      };
+};
 
 const createEventEditTemplate = () => {
   return (
@@ -186,7 +186,7 @@ const createEventEditTemplate = () => {
     </header>
   </form>`
     );
-  };
+};
 
 const createTripDaysContainerTemplate = () => {
   return (
@@ -194,7 +194,7 @@ const createTripDaysContainerTemplate = () => {
 
     </ul>`
     );
-  };
+};
 
 const createDayItemTemplate = () => {
   return (
@@ -205,7 +205,7 @@ const createDayItemTemplate = () => {
       </div>
     </li>`
     );
-  };
+};
 
 const createEventListTemplate = () => {
   return (
@@ -213,7 +213,7 @@ const createEventListTemplate = () => {
 
     </ul>`
     );
-  };
+};
 
 const createEventItemTemplate = () => {
   return (
@@ -252,7 +252,7 @@ const createEventItemTemplate = () => {
     </div>
   </li>`
     );
-  };
+};
 
 const createTripInfoContainerTemplate = () => {
   return (
@@ -260,7 +260,7 @@ const createTripInfoContainerTemplate = () => {
 
     </section>`
     );
-  };
+};
 
 const createTripSummaryTemplate = () => {
   return (
@@ -270,7 +270,7 @@ const createTripSummaryTemplate = () => {
       <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
     </div>`
     );
-  };
+};
 
 const createTripTotalPriceTemplate = () => {
   return (
@@ -278,9 +278,7 @@ const createTripTotalPriceTemplate = () => {
       Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
     </p>`
     );
-  };
-
-
+};
 
 
 render(eventsHeadingElement, createTripInfoContainerTemplate(), `afterbegin`);
