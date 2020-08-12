@@ -9,8 +9,11 @@ import {createEventItemTemplate} from "./view/event-item.js";
 import {createTripInfoContainerTemplate} from "./view/trip-info-container.js";
 import {createTripSummaryTemplate} from "./view/trip-summary.js";
 import {createTripTotalPriceTemplate} from "./view/total-price.js";
+import {generateEvent} from "./mock/event.js";
 
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 5;
+
+const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
@@ -48,5 +51,5 @@ render(dayInfoElement, createEventListTemplate(), `afterend`);
 const eventsListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
 for (let i = 0; i < EVENT_COUNT; i++) {
-  render(eventsListElement, createEventItemTemplate());
+  render(eventsListElement, createEventItemTemplate(events[i]));
 }
