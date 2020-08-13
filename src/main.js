@@ -11,7 +11,7 @@ import {createTripSummaryTemplate} from "./view/trip-summary.js";
 import {createTripTotalPriceTemplate} from "./view/total-price.js";
 import {generateEvent} from "./mock/event.js";
 
-const EVENT_COUNT = 5;
+const EVENT_COUNT = 15;
 
 const events = new Array(EVENT_COUNT).fill().map(generateEvent);
 
@@ -38,7 +38,10 @@ render(siteControlsElement, createSiteFiltersTemplate());
 render(eventsContainerElement, createSortTemplate(), `afterbegin`);
 
 const sortingForm = eventsContainerElement.querySelector(`.trip-sort`);
-render(sortingForm, createEventEditTemplate(), `afterend`);
+render(sortingForm, createEventEditTemplate(events[0]), `afterend`);
+
+const currentType = events[0].type.toLowerCase();
+document.querySelector(`#event-type-${currentType}-1`).checked = true;
 
 render(eventsContainerElement, createTripDaysContainerTemplate());
 
@@ -50,6 +53,6 @@ render(dayInfoElement, createEventListTemplate(), `afterend`);
 
 const eventsListElement = eventsContainerElement.querySelector(`.trip-events__list`);
 
-for (let i = 0; i < EVENT_COUNT; i++) {
+for (let i = 1; i < EVENT_COUNT; i++) {
   render(eventsListElement, createEventItemTemplate(events[i]));
 }

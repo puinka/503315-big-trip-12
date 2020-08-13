@@ -1,43 +1,6 @@
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
+import {EVENT_TYPES, DESTINATIONS, OFFERS} from "../const.js";
+import {getRandomInteger, generateRandomValue} from "../util.js";
 
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-const generateEventType = () => {
-  const eventTypes = [
-    `Taxi`,
-    `Bus`,
-    `Train`,
-    `Ship`,
-    `Transport`,
-    `Drive`,
-    `Flight`,
-    `Check-in`,
-    `Sightseeing`,
-    `Restaurant`
-  ];
-
-  const randomIndex = getRandomInteger(0, eventTypes.length - 1);
-
-  return eventTypes[randomIndex];
-};
-
-const generateDestination = () => {
-  const destinations = [
-    `Tampere`,
-    `Pietarsaari`,
-    `Kokkola`,
-    `Parainen`,
-    `Helsinki`,
-    `Oulu`
-  ];
-
-  const randomIndex = getRandomInteger(0, destinations.length - 1);
-
-  return destinations[randomIndex];
-};
 
 const generateDescription = () => {
   const descriptions = [
@@ -100,15 +63,27 @@ const generateRandomTime = () => {
 export const generateEvent = () => {
   const randomTime = generateRandomTime();
 
+  const isOfferAvailable = Boolean(getRandomInteger(0, 1));
+  const offer = isOfferAvailable ? generateRandomValue(OFFERS) : ``;
+
+
   return {
-    type: generateEventType(),
-    destination: generateDestination(),
-    description: generateDescription(),
+    type: generateRandomValue(EVENT_TYPES),
+    destination: generateRandomValue(DESTINATIONS),
+    description: {
+      text: generateDescription(),
+      photo: `http://picsum.photos/248/152?r=${Math.random()}`
+    },
     timeInfo: {
       start: randomTime.startTime,
       end: randomTime.endTime,
       duration: randomTime.duration
     },
-    price: getRandomInteger(1, 250)
+    price: getRandomInteger(1, 250),
+    isOfferAvailable,
+    offer: {
+      text: offer.text,
+      price: offer.price
+    }
   };
 };

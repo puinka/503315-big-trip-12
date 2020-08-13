@@ -1,5 +1,5 @@
 export const createEventItemTemplate = (event) => {
-  const {type, destination, price, timeInfo} = event;
+  const {type, destination, price, timeInfo, offer} = event;
   const preposition = (type === `Check-in` || type === `Sightseeing` || type === `Restaurant`) ? `in` : `to`;
 
   return (
@@ -26,9 +26,9 @@ export const createEventItemTemplate = (event) => {
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
         <li class="event__offer">
-          <span class="event__offer-title">Order Uber</span>
+          <span class="event__offer-title">${offer.text}</span>
           &plus;
-          &euro;&nbsp;<span class="event__offer-price">20</span>
+          &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
          </li>
       </ul>
 

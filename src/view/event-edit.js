@@ -1,11 +1,14 @@
-export const createEventEditTemplate = () => {
+export const createEventEditTemplate = (event) => {
+  const {type, description} = event;
+  const preposition = (type === `Check-in` || type === `Sightseeing` || type === `Restaurant`) ? `in` : `to`;
+
   return (
     `<form class="trip-events__item  event  event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/bus.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
         </label>
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -19,7 +22,7 @@ export const createEventEditTemplate = () => {
             </div>
 
             <div class="event__type-item">
-              <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus" checked>
+              <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
               <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
             </div>
 
@@ -72,7 +75,7 @@ export const createEventEditTemplate = () => {
 
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          Bus to
+          ${type} ${preposition}
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
         <datalist id="destination-list-1">
@@ -160,7 +163,7 @@ export const createEventEditTemplate = () => {
 
               <section class="event__section  event__section--destination">
                 <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+                <p class="event__destination-description">${description.text}</p>
 
                 <div class="event__photos-container">
                   <div class="event__photos-tape">
