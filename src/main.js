@@ -10,10 +10,19 @@ import {createTripInfoContainerTemplate} from "./view/trip-info-container.js";
 import {createTripSummaryTemplate} from "./view/trip-summary.js";
 import {createTripTotalPriceTemplate} from "./view/total-price.js";
 import {generateEvent} from "./mock/event.js";
+import {generateDay} from "./mock/day.js";
 
-const EVENT_COUNT = 15;
+const EVENT_COUNT = 20;
+const DAY_COUNT = 3;
 
 const events = new Array(EVENT_COUNT).fill().map(generateEvent);
+const days = [];
+
+for (let i = 0; i < DAY_COUNT; i++) {
+  let generatedDay = generateDay(i);
+  days.push(generatedDay);
+}
+
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
@@ -46,13 +55,33 @@ document.querySelector(`#event-type-${currentType}-1`).checked = true;
 render(eventsContainerElement, createTripDaysContainerTemplate());
 
 const tripDaysList = eventsContainerElement.querySelector(`.trip-days`);
-render(tripDaysList, createDayItemTemplate());
 
-const dayInfoElement = eventsContainerElement.querySelector(`.day__info`);
-render(dayInfoElement, createEventListTemplate(), `afterend`);
 
-const eventsListElement = eventsContainerElement.querySelector(`.trip-events__list`);
+for (let i = 0; i < DAY_COUNT; i++) {
+  render(tripDaysList, createDayItemTemplate(days[i]));
 
-for (let i = 1; i < EVENT_COUNT; i++) {
-  render(eventsListElement, createEventItemTemplate(events[i]));
+  const idNum = i + 1;
+
+  const dayContainer = eventsContainerElement.querySelector(`#day-${idNum}`);
+  render(dayContainer, createEventListTemplate());
+
 }
+
+for (let i = 0; i < DAY_COUNT; i++) {
+
+  const idNum = i + 1;
+  const dayContainer = eventsContainerElement.querySelector(`#day-${idNum}`);
+
+  for (let j = i * 3; j < (i * 3) + 3; j++) {
+
+    const eventsListElement = dayContainer.querySelector(`.trip-events__list`);
+    render(eventsListElement, createEventItemTemplate(events[j]));
+  }
+}
+
+// const dayInfoElement = eventsContainerElement.querySelector(`.day__info`);
+// render(dayInfoElement, createEventListTemplate(), `afterend`);
+
+// const eventsListElement = eventsContainerElement.querySelector(`.trip-events__list`);
+
+
