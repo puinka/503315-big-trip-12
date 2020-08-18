@@ -21,10 +21,10 @@ export const DESTINATIONS = [
 ];
 
 export const OFFERS = [
-  {text: `Add luggage`, price: `30`},
-  {text: `Switch to comfort class`, price: `100`},
-  {text: `Add meal`, price: `15`},
-  {text: `Choose seats`, price: `15`},
-  {text: `Travel by train`, price: `40`},
-  {text: `Order Uber`, price: `20`}
+  {text: `Add luggage`, price: `30`, id: `luggage`},
+  {text: `Switch to comfort class`, price: `100`, id: `comfort`},
+  {text: `Add meal`, price: `15`, id: `meal`},
+  {text: `Choose seats`, price: `15`, id: `seats`},
+  {text: `Travel by train`, price: `40`, id: `train`},
+  {text: `Order Uber`, price: `20`, id: `uber`}
 ];
