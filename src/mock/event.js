@@ -1,5 +1,5 @@
 import {EVENT_TYPES, DESTINATIONS, OFFERS} from "../const.js";
-import {getRandomInteger, generateRandomValue} from "../util.js";
+import {getRandomInteger, generateRandomValue, shuffleArray} from "../util.js";
 
 
 const generateDescription = () => {
@@ -27,44 +27,35 @@ const generateDescription = () => {
   return description;
 };
 
-const generateRandomTime = () => {
-  let hoursStart = getRandomInteger(0, 23);
-  let minutesStart = getRandomInteger(0, 11) * 5;
-  let startInMin = hoursStart * 60 + minutesStart;
-  let hoursEnd = getRandomInteger(0, 23);
-  let minutesEnd = getRandomInteger(0, 11) * 5;
-  let endInMin = hoursEnd * 60 + minutesEnd;
-  let day = ``;
-  let durationHours = Math.floor((endInMin - startInMin) / 60);
-  let durationMinutes = (endInMin - startInMin) % 60;
+const generateOffers = (arr) => {
 
-  if (startInMin > endInMin) {
-    day = `1D `;
-    durationHours = 12 + (hoursEnd - hoursStart);
-    durationMinutes = 60 + durationMinutes;
+  const inPutArr = shuffleArray(arr);
+  const outPutArr = [];
+  for (let i = 0; i < 5; i++) {
+    if ((getRandomInteger(0, 1))) {
+      outPutArr.push(inPutArr[i]);
+    }
   }
 
-  hoursStart = hoursStart < 10 ? `0` + hoursStart.toString() : hoursStart.toString();
-  minutesStart = minutesStart < 10 ? `0` + minutesStart.toString() : minutesStart.toString();
-  hoursEnd = hoursEnd < 10 ? `0` + hoursEnd.toString() : hoursEnd.toString();
-  minutesEnd = minutesEnd < 10 ? `0` + minutesEnd.toString() : minutesEnd.toString();
+  return outPutArr;
 
-  let startTime = hoursStart + `:` + minutesStart;
-  let endTime = hoursEnd.toString() + `:` + minutesEnd.toString();
-  let duration = day + durationHours.toString() + `H ` + durationMinutes.toString() + `M`;
-
-  return {
-    startTime,
-    endTime,
-    duration
-  };
 };
 
-export const generateEvent = () => {
-  const randomTime = generateRandomTime();
+const generatePhotos = () => {
+  const photos = [];
+  const amount = getRandomInteger(1, 5);
+  for (let i = 0; i <= amount; i++) {
+    photos.push(`http://picsum.photos/248/152?r=${Math.random()}`);
+  }
+  return photos;
+};
 
-  const isOfferAvailable = Boolean(getRandomInteger(0, 1));
-  const offer = isOfferAvailable ? generateRandomValue(OFFERS) : ``;
+export const generateEvent = (startDate) => {
+
+  const startTime = new Date(startDate);
+  const endTime = new Date(startDate);
+  endTime.setHours(endTime.getHours() + getRandomInteger(1, 2));
+  endTime.setMinutes(endTime.getMinutes() + getRandomInteger(1, 59));
 
 
   return {
@@ -72,18 +63,24 @@ export const generateEvent = () => {
     destination: generateRandomValue(DESTINATIONS),
     description: {
       text: generateDescription(),
-      photo: `http://picsum.photos/248/152?r=${Math.random()}`
+      photos: generatePhotos()
     },
     timeInfo: {
-      start: randomTime.startTime,
-      end: randomTime.endTime,
-      duration: randomTime.duration
+      start: startTime,
+      end: endTime,
     },
     price: getRandomInteger(1, 250),
-    isOfferAvailable,
-    offer: {
-      text: offer.text,
-      price: offer.price
-    }
+    offers: generateOffers(OFFERS)
   };
+};
+
+export const generateData = (count) => {
+  const startDate = new Date();
+  const data = [];
+  for (let i = 0; i < count; i++) {
+    startDate.setHours(startDate.getHours() + getRandomInteger(1, 5));
+    startDate.setMinutes(startDate.getMinutes() + getRandomInteger(1, 59));
+    data.push(generateEvent(startDate));
+  }
+  return data;
 };
