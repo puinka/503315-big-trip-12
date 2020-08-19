@@ -40,9 +40,6 @@ render(eventsContainerElement, createSortTemplate(), `afterbegin`);
 const sortingForm = eventsContainerElement.querySelector(`.trip-sort`);
 render(sortingForm, createEventEditTemplate(events[0]), `afterend`);
 
-const currentType = events[0].type.toLowerCase();
-document.querySelector(`#event-type-${currentType}-1`).checked = true;
-
 render(eventsContainerElement, createTripDaysContainerTemplate());
 const tripDaysContainer = eventsContainerElement.querySelector(`.trip-days`);
 

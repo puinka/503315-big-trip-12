@@ -5,7 +5,7 @@ export const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-export const generateRandomValue = (arr) => {
+export const getRandomElement = (arr) => {
 
   const randomIndex = getRandomInteger(0, arr.length - 1);
 
@@ -18,4 +18,11 @@ export const shuffleArray = (arr) => {
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;
+};
+
+export const humanizeTime = (date) => {
+  const hours = date.getHours().toString().padStart(2, `0`);
+  const minutes = date.getMinutes().toString().padStart(2, `0`);
+
+  return `${hours}:${minutes}`;
 };
