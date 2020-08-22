@@ -1,9 +1,36 @@
-import {createEventItemTemplate} from "./event-item.js";
-import {createElement} from "../util.js";
+import EventView from "./event-item.js";
+import EventEditView from "./event-edit.js";
+import {createElement, RenderPosition, render} from "../util.js";
+
+
+
+const renderEvent = (eventListElement, event) => {
+  const eventComponent = new EventView(event);
+  const eventEditComponent = new EventEditView(event);
+
+  const replaceEventToEdit = () => {
+    eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  };
+
+  const replaceEditToEvent = () => {
+    eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  };
+
+  eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceEventToEdit();
+  });
+
+  eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceEditToEvent();
+  });
+
+  render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+};
 
 
 const createEventsList = (events) => {
-  const eventsListTemplate = events.map((event) => createEventItemTemplate(event)).join(``);
+  const eventsListTemplate = events.map((event) => new EventView(event).getTemplate()).join(``);
 
   return eventsListTemplate;
 };
@@ -19,12 +46,12 @@ const createDay = (dayNumber, date, events) => {
               <time class="day__date" datetime="2019-03-18">${dateString}</time>
             </div>
             <ul class="trip-events__list"> ${createEventsList(relevantEvents)} </ul>
-        </li>`;
+          </li>`;
 };
 
 
 const createDaysListTemplate = (events) => {
-  events.shift();
+  //events.shift();
   let prevEvent = null;
   let dayNumber = 1;
   const daysList = [];
@@ -41,6 +68,7 @@ const createDaysListTemplate = (events) => {
   }
 
   const daysListTemplate = daysList.join(``);
+  console.log(daysListTemplate)
   return daysListTemplate;
 };
 

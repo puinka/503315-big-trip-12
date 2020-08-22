@@ -2,7 +2,6 @@ import SiteMenuView from "./view/site-menu.js";
 import SiteFilterView from "./view/filter.js";
 import SiteSortView from "./view/sort.js";
 import EventsContainerView from "./view/events-container.js";
-import EventEditView from "./view/event-edit.js";
 import DaysContainerView from "./view/days-container.js";
 import DaysView from "./view/days.js";
 import TripInfoContainerView from "./view/trip-info-container.js";
@@ -15,7 +14,6 @@ const EVENT_COUNT = 20;
 
 
 const events = generateData(EVENT_COUNT);
-
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
@@ -39,7 +37,6 @@ render(eventsContainer.getElement(), new SiteSortView().getElement(), RenderPosi
 const daysContainer = new DaysContainerView();
 render(eventsContainer.getElement(), daysContainer.getElement(), RenderPosition.BEFOREEND);
 
-render(daysContainer.getElement(), new EventEditView(events[0]).getElement(), RenderPosition.BEFOREEND);
 render(daysContainer.getElement(), new DaysView(events).getElement(), RenderPosition.BEFOREEND);
 
 
