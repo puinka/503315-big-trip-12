@@ -1,5 +1,5 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
-import {humanizeTime, getRandomInteger} from "../util.js";
+import {humanizeTime, getRandomInteger, createElement} from "../util.js";
 
 const createOffersList = (offers) => {
 
@@ -60,7 +60,7 @@ const getFormatedDate = (date) => {
 
 };
 
-export const createEventEditTemplate = (event) => {
+const createEventEditTemplate = (event) => {
   const {type, description, offers, price, startTime, endTime} = event;
   const preposition = [`Check-in`, `Sightseeing`, `Restaurant`].includes(type) ? `in` : `to`;
 
@@ -137,3 +137,26 @@ export const createEventEditTemplate = (event) => {
   </form>`
   );
 };
+
+export default class EventEdit {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventEditTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

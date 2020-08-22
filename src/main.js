@@ -1,13 +1,15 @@
-import {createSiteMenuTemplate} from "./view/site-menu.js";
-import {createSiteFiltersTemplate} from "./view/filter.js";
-import {createSortTemplate} from "./view/sort.js";
-import {createEventEditTemplate} from "./view/event-edit.js";
-import {createTripDaysContainerTemplate} from "./view/days-container.js";
-import {createDaysListTemplate} from "./view/days.js";
-import {createTripInfoContainerTemplate} from "./view/trip-info-container.js";
-import {createTripSummaryTemplate} from "./view/trip-summary.js";
-import {createTripTotalPriceTemplate} from "./view/total-price.js";
+import SiteMenuView from "./view/site-menu.js";
+import SiteFilterView from "./view/filter.js";
+import SiteSortView from "./view/sort.js";
+import EventsContainerView from "./view/events-container.js";
+import EventEditView from "./view/event-edit.js";
+import DaysContainerView from "./view/days-container.js";
+import DaysView from "./view/days.js";
+import TripInfoContainerView from "./view/trip-info-container.js";
+import TripSummaryView from "./view/trip-summary.js";
+import TripTotalPriceView from "./view/total-price.js";
 import {generateData} from "./mock/event.js";
+import {renderTemplate, renderElement, RenderPosition} from "./util.js";
 
 const EVENT_COUNT = 20;
 
@@ -17,30 +19,27 @@ const events = generateData(EVENT_COUNT);
 
 const siteHeaderElement = document.querySelector(`.page-header`);
 const siteControlsElement = siteHeaderElement.querySelector(`.trip-controls`);
-const siteMainElement = document.querySelector(`.page-main`);
-const eventsContainerElement = siteMainElement.querySelector(`.trip-events`);
+const pageMain = document.querySelector(`.page-main`);
+
 const eventsHeadingElement = siteHeaderElement.querySelector(`.trip-main`);
 
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
 
-render(eventsHeadingElement, createTripInfoContainerTemplate(), `afterbegin`);
+const tripInfoContainerComponent = new TripInfoContainerView();
+renderElement(eventsHeadingElement, tripInfoContainerComponent.getElement(), RenderPosition.AFTERBEGIN);
+renderElement(tripInfoContainerComponent.getElement(), new TripSummaryView().getElement(), RenderPosition.AFTERBEGIN);
+renderElement(tripInfoContainerComponent.getElement(), new TripTotalPriceView().getElement(), RenderPosition.BEFOREEND);
 
-const tripInfoContainer = eventsHeadingElement.querySelector(`.trip-info`);
-render(tripInfoContainer, createTripSummaryTemplate(), `afterbegin`);
-render(tripInfoContainer, createTripTotalPriceTemplate());
+renderElement(siteControlsElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
+renderElement(siteControlsElement, new SiteFilterView().getElement(), RenderPosition.BEFOREEND);
 
-render(siteControlsElement, createSiteMenuTemplate());
-render(siteControlsElement, createSiteFiltersTemplate());
+const eventsContainer = new EventsContainerView();
+renderElement(pageMain, eventsContainer.getElement(), RenderPosition.BEFOREEND);
+renderElement(eventsContainer.getElement(), new SiteSortView().getElement(), RenderPosition.BEFOREEND);
+
+const daysContainer = new DaysContainerView();
+renderElement(eventsContainer.getElement(), daysContainer.getElement(), RenderPosition.BEFOREEND);
+
+renderElement(daysContainer.getElement(), new EventEditView(events[0]).getElement(), RenderPosition.BEFOREEND);
+renderElement(daysContainer.getElement(), new DaysView(events).getElement(), RenderPosition.BEFOREEND);
 
 
-render(eventsContainerElement, createSortTemplate(), `afterbegin`);
-
-const sortingForm = eventsContainerElement.querySelector(`.trip-sort`);
-render(sortingForm, createEventEditTemplate(events[0]), `afterend`);
-
-render(eventsContainerElement, createTripDaysContainerTemplate());
-const tripDaysContainer = eventsContainerElement.querySelector(`.trip-days`);
-
-render(tripDaysContainer, createDaysListTemplate(events));

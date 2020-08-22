@@ -1,4 +1,5 @@
 import {createEventItemTemplate} from "./event-item.js";
+import {createElement} from "../util.js";
 
 
 const createEventsList = (events) => {
@@ -22,7 +23,7 @@ const createDay = (dayNumber, date, events) => {
 };
 
 
-export const createDaysListTemplate = (events) => {
+const createDaysListTemplate = (events) => {
   events.shift();
   let prevEvent = null;
   let dayNumber = 1;
@@ -42,3 +43,26 @@ export const createDaysListTemplate = (events) => {
   const daysListTemplate = daysList.join(``);
   return daysListTemplate;
 };
+
+export default class Days {
+  constructor(events) {
+    this._events = events;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createDaysListTemplate(this._events);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
