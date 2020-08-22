@@ -2,8 +2,6 @@ import EventView from "./event-item.js";
 import EventEditView from "./event-edit.js";
 import {createElement, RenderPosition, render} from "../util.js";
 
-
-
 const renderEvent = (eventListElement, event) => {
   const eventComponent = new EventView(event);
   const eventEditComponent = new EventEditView(event);
@@ -51,7 +49,6 @@ const createDay = (dayNumber, date, events) => {
 
 
 const createDaysListTemplate = (events) => {
-  //events.shift();
   let prevEvent = null;
   let dayNumber = 1;
   const daysList = [];
@@ -68,7 +65,6 @@ const createDaysListTemplate = (events) => {
   }
 
   const daysListTemplate = daysList.join(``);
-  console.log(daysListTemplate)
   return daysListTemplate;
 };
 
