@@ -1,6 +1,17 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
 import {humanizeTime, getRandomInteger, createElement} from "../util.js";
 
+const BLANK_EVENT = {
+  type: `Bus`,
+  destination: `Helsinki`,
+  description: null,
+  startTime: `Today 00:00`,
+  endTime: `Today 00:00`,
+  price: null,
+  offers: null
+
+};
+
 const createOffersList = (offers) => {
 
   if (offers.length > 0) {
@@ -139,7 +150,7 @@ const createEventEditTemplate = (event) => {
 };
 
 export default class EventEdit {
-  constructor(event) {
+  constructor(event = BLANK_EVENT) {
     this._event = event;
     this._element = null;
   }
