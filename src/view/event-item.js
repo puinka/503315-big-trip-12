@@ -1,4 +1,4 @@
-import {humanizeTime} from "../util.js";
+import {humanizeTime, createElement} from "../util.js";
 
 const calculateDuration = (start, end) => {
 
@@ -14,7 +14,8 @@ const calculateDuration = (start, end) => {
 const createOffersList = (offers) => {
 
   if (offers.length > 0) {
-    const offersListTemplate = offers.map((offer) => `<li class="event__offer">
+    const offersListTemplate = offers.map((offer) => `
+    <li class="event__offer">
          <span class="event__offer-title">${offer.text}</span>
          &plus;
          &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
@@ -28,7 +29,7 @@ const createOffersList = (offers) => {
 };
 
 
-export const createEventItemTemplate = (event) => {
+const createEventItemTemplate = (event) => {
   const {type, destination, price, startTime, endTime, offers} = event;
   const preposition = [`Check-in`, `Sightseeing`, `Restaurant`].includes(type) ? `in` : `to`;
   const startTimeString = humanizeTime(startTime);
@@ -38,25 +39,25 @@ export const createEventItemTemplate = (event) => {
   return (
     `<li class="trip-events__item">
       <div class="event">
-      <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
-      </div>
-      <h3 class="event__title">${type} ${preposition} ${destination}</h3>
+        <div class="event__type">
+          <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
+        </div>
+        <h3 class="event__title">${type} ${preposition} ${destination}</h3>
 
-      <div class="event__schedule">
-        <p class="event__time">
-          <time class="event__start-time">${startTimeString}</time>
-          &mdash;
-          <time class="event__end-time">${endTimeString}</time>
+        <div class="event__schedule">
+          <p class="event__time">
+            <time class="event__start-time">${startTimeString}</time>
+            &mdash;
+            <time class="event__end-time">${endTimeString}</time>
+          </p>
+          <p class="event__duration">${duration}</p>
+        </div>
+
+        <p class="event__price">
+          &euro;&nbsp;<span class="event__price-value">${price}</span>
         </p>
-        <p class="event__duration">${duration}</p>
-      </div>
 
-      <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${price}</span>
-      </p>
-
-      <h4 class="visually-hidden">Offers:</h4>
+        <h4 class="visually-hidden">Offers:</h4>
 
           ${createOffersList(offers)}
 
@@ -64,6 +65,30 @@ export const createEventItemTemplate = (event) => {
         <span class="visually-hidden">Open event</span>
       </button>
     </div>
-  </li>`
+  </li>
+  `
   );
 };
+
+export default class Event {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventItemTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

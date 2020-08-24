@@ -1,4 +1,6 @@
-export const createTripSummaryTemplate = () => {
+import {createElement} from "../util.js";
+
+const createTripSummaryTemplate = () => {
   return (
     `<div class="trip-info__main">
       <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
@@ -7,3 +9,25 @@ export const createTripSummaryTemplate = () => {
     </div>`
   );
 };
+
+export default class TripSummary {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripSummaryTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
