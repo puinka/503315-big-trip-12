@@ -4,6 +4,7 @@ import SiteSortView from "./view/sort.js";
 import EventsContainerView from "./view/events-container.js";
 import EventView from "./view/event-item.js";
 import EventEditView from "./view/event-edit.js";
+import NoEventView from "./view/no-events.js";
 import DaysContainerView from "./view/days-container.js";
 import DayView from "./view/day-item.js";
 import TripInfoContainerView from "./view/trip-info-container.js";
@@ -34,65 +35,82 @@ render(siteControlsElement, new SiteMenuView().getElement(), RenderPosition.BEFO
 render(siteControlsElement, new SiteFilterView().getElement(), RenderPosition.BEFOREEND);
 
 const eventsContainer = new EventsContainerView();
+
 render(pageMain, eventsContainer.getElement(), RenderPosition.BEFOREEND);
-render(eventsContainer.getElement(), new SiteSortView().getElement(), RenderPosition.BEFOREEND);
+const tripEvents = eventsContainer.getElement().querySelector(`.trip-events`);
 
-const daysContainer = new DaysContainerView();
+if (events.length === 0) {
+  render(tripEvents, new NoEventView().getElement(), RenderPosition.BEFOREEND);
 
-render(eventsContainer.getElement(), daysContainer.getElement(), RenderPosition.BEFOREEND);
+} else {
+  render(tripEvents, new SiteSortView().getElement(), RenderPosition.BEFOREEND);
 
-const renderEvent = (eventListElement, event) => {
-  const eventComponent = new EventView(event);
-  const eventEditComponent = new EventEditView(event);
 
-  const replaceEventToEdit = () => {
-    eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  const daysContainer = new DaysContainerView();
+
+  render(tripEvents, daysContainer.getElement(), RenderPosition.BEFOREEND);
+
+  const renderEvent = (eventListElement, event) => {
+    const eventComponent = new EventView(event);
+    const eventEditComponent = new EventEditView(event);
+
+    const replaceEventToEdit = () => {
+      eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+      document.addEventListener(`keydown`, onEscKeyDown);
+    };
+
+    const replaceEditToEvent = () => {
+      eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    };
+
+    const onEscKeyDown = (evt) => {
+      if (evt.key === `Escape` || evt.key === `Esc`) {
+        evt.preventDefault();
+        replaceEditToEvent();
+      }
+    };
+
+    eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+      replaceEventToEdit();
+    });
+
+    eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      replaceEditToEvent();
+    });
+
+    render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
   };
 
-  const replaceEditToEvent = () => {
-    eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
-  };
+  const createDaysListTemplate = (items) => {
+    let prevEvent = null;
+    let dayNumber = 1;
 
-  eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    replaceEventToEdit();
-  });
+    for (const item of items) {
+      if (prevEvent === null || item.startTime.getDate() > prevEvent.startTime.getDate()) {
 
-  eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
-    replaceEditToEvent();
-  });
+        const date = item.startTime;
+        const newDay = new DayView(date, dayNumber).getElement();
+        render(daysContainer.getElement(), newDay, RenderPosition.BEFOREEND);
 
-  render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
-};
+        const currentDayEventsContainer = newDay.querySelector(`.trip-events__list:last-child`);
 
-const createDaysListTemplate = (items) => {
-  let prevEvent = null;
-  let dayNumber = 1;
+        const currentEvents = items.filter((element) => element.startTime.getDate() === date.getDate());
 
-  for (const item of items) {
-    if (prevEvent === null || item.startTime.getDate() > prevEvent.startTime.getDate()) {
+        currentEvents.forEach((element) => {
+          renderEvent(currentDayEventsContainer, element);
+        });
 
-      const date = item.startTime;
-      const newDay = new DayView(date, dayNumber).getElement();
-      render(daysContainer.getElement(), newDay, RenderPosition.BEFOREEND);
+        dayNumber++;
+      }
 
-      const currentDayEventsContainer = newDay.querySelector(`.trip-events__list:last-child`);
+      prevEvent = item;
 
-      const currentEvents = items.filter((element) => element.startTime.getDate() === date.getDate());
-
-      currentEvents.forEach((element) => {
-        renderEvent(currentDayEventsContainer, element);
-      });
-
-      dayNumber++;
     }
 
-    prevEvent = item;
+  };
 
-  }
+  createDaysListTemplate(events);
 
-};
-
-createDaysListTemplate(events);
-
-
+}
