@@ -1,4 +1,4 @@
-import {humanizeTime} from "../util.js";
+import {humanizeTime} from "../utils/event.js";
 import AbstractView from "./abstract.js";
 
 const calculateDuration = (start, end) => {

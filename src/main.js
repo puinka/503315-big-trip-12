@@ -11,7 +11,7 @@ import TripInfoContainerView from "./view/trip-info-container.js";
 import TripSummaryView from "./view/trip-summary.js";
 import TripTotalPriceView from "./view/total-price.js";
 import {generateData} from "./mock/event.js";
-import {render, RenderPosition} from "./util.js";
+import {render, RenderPosition, replace} from "./utils/render.js";
 
 const EVENT_COUNT = 20;
 
@@ -49,19 +49,19 @@ if (events.length === 0) {
 
   const daysContainer = new DaysContainerView();
 
-  render(tripEvents, daysContainer.getElement(), RenderPosition.BEFOREEND);
+  render(tripEvents, daysContainer, RenderPosition.BEFOREEND);
 
   const renderEvent = (eventListElement, event) => {
     const eventComponent = new EventView(event);
     const eventEditComponent = new EventEditView(event);
 
     const replaceEventToEdit = () => {
-      eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+      replace(eventEditComponent, eventComponent);
       document.addEventListener(`keydown`, onEscKeyDown);
     };
 
     const replaceEditToEvent = () => {
-      eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+      replace(eventComponent, eventEditComponent);
       document.removeEventListener(`keydown`, onEscKeyDown);
     };
 
@@ -80,7 +80,7 @@ if (events.length === 0) {
       replaceEditToEvent();
     });
 
-    render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+    render(eventListElement, eventComponent, RenderPosition.BEFOREEND);
   };
 
   const createDaysListTemplate = (items) => {
@@ -92,7 +92,7 @@ if (events.length === 0) {
 
         const date = item.startTime;
         const newDay = new DayView(date, dayNumber).getElement();
-        render(daysContainer.getElement(), newDay, RenderPosition.BEFOREEND);
+        render(daysContainer, newDay, RenderPosition.BEFOREEND);
 
         const currentDayEventsContainer = newDay.querySelector(`.trip-events__list:last-child`);
 

@@ -1,5 +1,5 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
-import {humanizeTime} from "../util.js";
+import {humanizeTime} from "../utils/event.js";
 import AbstractView from "./abstract.js";
 
 const BLANK_EVENT = {
