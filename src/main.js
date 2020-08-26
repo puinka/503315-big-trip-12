@@ -72,12 +72,11 @@ if (events.length === 0) {
       }
     };
 
-    eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    eventComponent.setEditClickHandler(() => {
       replaceEventToEdit();
     });
 
-    eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
-      evt.preventDefault();
+    eventEditComponent.setFormSubmitHandler(() => {
       replaceEditToEvent();
     });
 
