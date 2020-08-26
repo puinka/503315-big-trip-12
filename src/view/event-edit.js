@@ -1,5 +1,5 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
-import {humanizeTime, getRandomInteger, createElement} from "../util.js";
+import {humanizeTime, createElement} from "../util.js";
 
 const BLANK_EVENT = {
   type: `Bus`,
