@@ -1,4 +1,4 @@
-import {createElement} from "../util.js";
+import AbstractView from "./abstract.js";
 
 const getRouteCities = (events) => {
   const startCity = events[0].destination;
@@ -30,25 +30,16 @@ const createTripSummaryTemplate = (events) => {
   );
 };
 
-export default class TripSummary {
+export default class TripSummary extends AbstractView {
   constructor(events) {
+    super();
     this._events = events;
-    this._element = null;
+
   }
 
   getTemplate() {
     return createTripSummaryTemplate(this._events);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
 
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

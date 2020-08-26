@@ -1,4 +1,4 @@
-import {createElement} from "../util.js";
+import AbstractView from "./abstract.js";
 
 const createDayItemTemplate = (date, dayNumber) => {
   const dateString = date.toLocaleString(`en-US`, {day: `numeric`, month: `short`});
@@ -13,26 +13,16 @@ const createDayItemTemplate = (date, dayNumber) => {
 </li>`);
 };
 
-export default class DayItem {
+export default class DayItem extends AbstractView {
   constructor(date, dayNumber) {
+    super();
     this._date = date;
     this._dayNumber = dayNumber;
-    this._element = null;
+
   }
 
   getTemplate() {
     return createDayItemTemplate(this._date, this._dayNumber);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

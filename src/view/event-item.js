@@ -1,4 +1,5 @@
-import {humanizeTime, createElement} from "../util.js";
+import {humanizeTime} from "../util.js";
+import AbstractView from "./abstract.js";
 
 const calculateDuration = (start, end) => {
 
@@ -78,25 +79,15 @@ const createEventItemTemplate = (event) => {
   );
 };
 
-export default class Event {
+export default class Event extends AbstractView {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
+
   }
 
   getTemplate() {
     return createEventItemTemplate(this._event);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

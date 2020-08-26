@@ -1,5 +1,6 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
-import {humanizeTime, createElement} from "../util.js";
+import {humanizeTime} from "../util.js";
+import AbstractView from "./abstract.js";
 
 const BLANK_EVENT = {
   type: `Bus`,
@@ -149,25 +150,14 @@ const createEventEditTemplate = (event) => {
   );
 };
 
-export default class EventEdit {
+export default class EventEdit extends AbstractView {
   constructor(event = BLANK_EVENT) {
+    super();
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createEventEditTemplate(this._event);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }
