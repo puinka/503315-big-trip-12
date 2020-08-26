@@ -18,7 +18,7 @@ const createOffersList = (offers) => {
 
     const offersListTemplate = offers.map((offer) =>
       `<div class="event__offer-selector">
-        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${offer.id}" ${getRandomInteger(0, 1) ? `checked` : ``}>
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}-1" type="checkbox" name="event-offer-${offer.id}" ${offer.isChecked ? `checked` : ``}>
         <label class="event__offer-label" for="event-offer-${offer.id}-1">
           <span class="event__offer-title">${offer.text}</span>
           &plus;

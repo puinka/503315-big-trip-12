@@ -12,9 +12,17 @@ const calculateDuration = (start, end) => {
 };
 
 const createOffersList = (offers) => {
+  let checkedOffers = [];
 
-  if (offers.length > 0) {
-    const offersListTemplate = offers.map((offer) => `
+  for (const offer of offers) {
+    if (offer.isChecked) {
+      checkedOffers.push(offer);
+    }
+  }
+
+  if (checkedOffers.length > 0) {
+    checkedOffers = checkedOffers.slice(0, 3);
+    const offersListTemplate = checkedOffers.map((offer) => `
     <li class="event__offer">
          <span class="event__offer-title">${offer.text}</span>
          &plus;

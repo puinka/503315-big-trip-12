@@ -17,6 +17,7 @@ const EVENT_COUNT = 20;
 
 
 const events = generateData(EVENT_COUNT);
+
 const totalPrice = events.reduce((accumulator, currentValue) => accumulator + currentValue.price, 0);
 
 
@@ -28,7 +29,7 @@ const eventsHeadingElement = siteHeaderElement.querySelector(`.trip-main`);
 
 const tripInfoContainerComponent = new TripInfoContainerView();
 render(eventsHeadingElement, tripInfoContainerComponent.getElement(), RenderPosition.AFTERBEGIN);
-render(tripInfoContainerComponent.getElement(), new TripSummaryView().getElement(), RenderPosition.AFTERBEGIN);
+render(tripInfoContainerComponent.getElement(), new TripSummaryView(events).getElement(), RenderPosition.AFTERBEGIN);
 render(tripInfoContainerComponent.getElement(), new TripTotalPriceView(totalPrice).getElement(), RenderPosition.BEFOREEND);
 
 render(siteControlsElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
