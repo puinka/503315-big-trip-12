@@ -1,4 +1,5 @@
-import {humanizeTime, createElement} from "../util.js";
+import {humanizeTime} from "../utils/event.js";
+import AbstractView from "./abstract.js";
 
 const calculateDuration = (start, end) => {
 
@@ -12,9 +13,17 @@ const calculateDuration = (start, end) => {
 };
 
 const createOffersList = (offers) => {
+  let checkedOffers = [];
 
-  if (offers.length > 0) {
-    const offersListTemplate = offers.map((offer) => `
+  for (const offer of offers) {
+    if (offer.isChecked) {
+      checkedOffers.push(offer);
+    }
+  }
+
+  if (checkedOffers.length > 0) {
+    checkedOffers = checkedOffers.slice(0, 3);
+    const offersListTemplate = checkedOffers.map((offer) => `
     <li class="event__offer">
          <span class="event__offer-title">${offer.text}</span>
          &plus;
@@ -70,25 +79,27 @@ const createEventItemTemplate = (event) => {
   );
 };
 
-export default class Event {
+export default class Event extends AbstractView {
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
+
+    this._editClickHandler = this._editClickHandler.bind(this);
+
   }
 
   getTemplate() {
     return createEventItemTemplate(this._event);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._editClickHandler);
   }
+
 }

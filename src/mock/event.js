@@ -1,5 +1,5 @@
 import {EVENT_TYPES, DESTINATIONS, OFFERS} from "../const.js";
-import {getRandomInteger, getRandomElement, shuffleArray} from "../util.js";
+import {getRandomInteger, getRandomElement, shuffleArray} from "../utils/common.js";
 
 
 const generateDescription = () => {
