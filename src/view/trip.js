@@ -8,7 +8,7 @@ const createEventsContainerTemplate = () => {
   );
 };
 
-export default class EventsContainer extends AbstractView {
+export default class Trip extends AbstractView {
 
   getTemplate() {
     return createEventsContainerTemplate();
