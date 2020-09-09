@@ -1,12 +1,11 @@
 import TripView from "../view/trip.js";
 import SortView from "../view/sort.js";
-import EventView from "../view/event-item.js";
-import EventEditView from "../view/event-edit.js";
 import NoEventView from "../view/no-events.js";
 import DaysContainerView from "../view/days-container.js";
 import DayView from "../view/day-item.js";
+import EventPresenter from "./event.js";
 
-import {render, replace, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition} from "../utils/render.js";
 
 
 export default class Trip {
@@ -31,35 +30,8 @@ export default class Trip {
   }
 
   _renderEvent(currentDay, event) {
-    const eventComponent = new EventView(event);
-    const eventEditComponent = new EventEditView(event);
-
-    const replaceEventToEdit = () => {
-      replace(eventEditComponent, eventComponent);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    };
-
-    const replaceEditToEvent = () => {
-      replace(eventComponent, eventEditComponent);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        evt.preventDefault();
-        replaceEditToEvent();
-      }
-    };
-
-    eventComponent.setEditClickHandler(() => {
-      replaceEventToEdit();
-    });
-
-    eventEditComponent.setFormSubmitHandler(() => {
-      replaceEditToEvent();
-    });
-
-    render(currentDay, eventComponent, RenderPosition.BEFOREEND);
+    const eventPresenter = new EventPresenter(currentDay);
+    eventPresenter.init(event, currentDay);
   }
 
 
