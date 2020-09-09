@@ -1,6 +1,6 @@
 import EventView from "../view/event-item.js";
 import EventEditView from "../view/event-edit.js";
-import {render, RenderPosition, replace} from "../utils/render.js";
+import {render, RenderPosition, replace, remove} from "../utils/render.js";
 
 
 export default class Event {
@@ -20,10 +20,32 @@ export default class Event {
     this._event = event;
     this._currentDay = currentDay;
 
+    const prevEventComponent = this._eventComponent;
+    const prevEventEditComponent = this._eventEditComponent;
+
     this._eventComponent = new EventView(event);
     this._eventEditComponent = new EventEditView(event);
 
-    render(this._currentDay, this._eventComponent, RenderPosition.BEFOREEND);
+    if (prevEventComponent === null || prevEventEditComponent === null) {
+      render(this._currentDay, this._eventComponent, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._eventListContainer.getElement().contains(prevEventComponent.getElement())) {
+      replace(this._eventComponent, prevEventComponent);
+    }
+
+    if (this._taskListContainer.getElement().contains(prevEventEditComponent.getElement())) {
+      replace(this._taskEditComponent, prevEventEditComponent);
+    }
+
+    remove(prevEventComponent);
+    remove(prevEventEditComponent);
+  }
+
+  destroy() {
+    remove(this._eventComponent);
+    remove(this._eventEditComponent);
   }
 
   _replaceEventToEdit() {
