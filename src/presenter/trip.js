@@ -4,6 +4,7 @@ import NoEventView from "../view/no-events.js";
 import DaysContainerView from "../view/days-container.js";
 import DayView from "../view/day-item.js";
 import EventPresenter from "./event.js";
+import {updateItem} from "../utils/common.js";
 
 import {render, RenderPosition} from "../utils/render.js";
 
@@ -12,17 +13,37 @@ export default class Trip {
   constructor(tripContainer) {
     this._tripContainer = tripContainer;
 
+    this._eventPresenter = {};
+
     this._tripComponent = new TripView();
     this._sortComponent = new SortView();
     this._daysContainer = new DaysContainerView();
     this._noEventComponent = new NoEventView();
+
+    this._handleEventChange = this._handleEventChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
+
   }
 
   init(tripEvents) {
     this._tripEvents = tripEvents.slice();
+
+    this._sourcedTripEvents = tripEvents.slice();
     render(this._tripContainer, this._tripComponent, RenderPosition.BEFOREEND);
 
     this._renderTrip();
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._eventPresenter)
+      .forEach((presenter) => presenter.resetView());
+  }
+
+  _handleEventChange(updatedEvent) {
+    this._tripEvents = updateItem(this._tripEvents, updatedEvent);
+    this._sourcedTripEvents = updateItem(this._sourcedTripEvents, updatedEvent);
+    this._eventPresenter[updatedEvent.id].init(updatedEvent);
   }
 
   _renderSort() {
@@ -30,8 +51,9 @@ export default class Trip {
   }
 
   _renderEvent(currentDay, event) {
-    const eventPresenter = new EventPresenter(currentDay);
+    const eventPresenter = new EventPresenter(currentDay, this._handleEventChange, this._handleModeChange);
     eventPresenter.init(event, currentDay);
+    this._eventPresenter[event.id] = eventPresenter;
   }
 
 
