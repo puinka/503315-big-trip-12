@@ -20,7 +20,7 @@ export default class Event {
     this._mode = Mode.DEFAULT;
 
     this._handleEditClick = this._handleEditClick.bind(this);
-    //this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
@@ -36,7 +36,7 @@ export default class Event {
     this._eventEditComponent = new EventEditView(event);
 
     this._eventComponent.setEditClickHandler(this._handleEditClick);
-    //this._eventComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+
 
     if (prevEventComponent === null || prevEventEditComponent === null) {
       render(this._currentDay, this._eventComponent, RenderPosition.BEFOREEND);
@@ -62,7 +62,7 @@ export default class Event {
 
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
-      this._replaceEventToEdit();
+      this._replaceEditToEvent();
     }
   }
 
