@@ -1,6 +1,8 @@
 import {EVENT_TYPES, DESTINATIONS, OFFERS} from "../const.js";
 import {getRandomInteger, getRandomElement, shuffleArray} from "../utils/common.js";
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 
 const generateDescription = () => {
   const descriptions = [
@@ -59,6 +61,7 @@ export const generateEvent = (startDate) => {
 
 
   return {
+    id: generateId(),
     type: getRandomElement(EVENT_TYPES),
     destination: getRandomElement(DESTINATIONS),
     description: {
@@ -68,7 +71,8 @@ export const generateEvent = (startDate) => {
     startTime,
     endTime,
     price: getRandomInteger(1, 250),
-    offers: generateOffers(OFFERS)
+    offers: generateOffers(OFFERS),
+    isFavorite: getRandomInteger(0, 1)
   };
 };
 
