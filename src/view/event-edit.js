@@ -1,5 +1,5 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
-import {humanizeTime, getFormatedDate} from "../utils/event.js";
+import {getFormatedDate} from "../utils/event.js";
 import SmartView from "./smart.js";
 import flatpickr from "flatpickr";
 

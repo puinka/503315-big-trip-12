@@ -1,8 +1,6 @@
 import {humanizeTime, humanizeDuration} from "../utils/event.js";
 import AbstractView from "./abstract.js";
 
-
-
 const createOffersList = (offers) => {
   let checkedOffers = [];
 
