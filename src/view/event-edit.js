@@ -1,6 +1,9 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
 import {humanizeTime} from "../utils/event.js";
 import SmartView from "./smart.js";
+import flatpickr from "flatpickr";
+
+import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 
 const BLANK_EVENT = {
   type: `Bus`,
@@ -163,7 +166,7 @@ export default class EventEdit extends SmartView {
   constructor(event = BLANK_EVENT) {
     super();
     this._data = event;
-
+    this._datepicker = null;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
 

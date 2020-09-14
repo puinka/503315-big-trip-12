@@ -1,7 +1,8 @@
 import AbstractView from "./abstract.js";
+import {humanizeDay} from "../utils/event.js";
 
 const createDayItemTemplate = (date, dayNumber) => {
-  const dateString = date.toLocaleString(`en-US`, {day: `numeric`, month: `short`});
+  const dateString = humanizeDay(date);
 
   return (`<li class="trip-days__item  day" id="day-${dayNumber}">
   <div class="day__info">

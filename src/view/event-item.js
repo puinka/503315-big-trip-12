@@ -1,16 +1,7 @@
-import {humanizeTime} from "../utils/event.js";
+import {humanizeTime, humanizeDuration} from "../utils/event.js";
 import AbstractView from "./abstract.js";
 
-const calculateDuration = (start, end) => {
 
-  const duration = end.getTime() - start.getTime();
-
-  const minutes = Math.floor((duration / (1000 * 60)) % 60).toString().padStart(2, `0`);
-  const hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-  const durationString = hours + `H ` + minutes + `M`;
-  return durationString;
-};
 
 const createOffersList = (offers) => {
   let checkedOffers = [];
@@ -43,7 +34,7 @@ const createEventItemTemplate = (event) => {
   const preposition = [`Check-in`, `Sightseeing`, `Restaurant`].includes(type) ? `in` : `to`;
   const startTimeString = humanizeTime(startTime);
   const endTimeString = humanizeTime(endTime);
-  const duration = calculateDuration(startTime, endTime);
+  const duration = humanizeDuration(startTime, endTime);
 
   return (
     `<li class="trip-events__item">
