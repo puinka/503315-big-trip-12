@@ -19,6 +19,7 @@ export default class Abstract {
       this._element = createElement(this.getTemplate());
     }
 
+
     return this._element;
   }
 

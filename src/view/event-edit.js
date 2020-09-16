@@ -165,7 +165,7 @@ export default class EventEdit extends SmartView {
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
     this._setFavoriteClickHandler();
-    this._setDatepicker();
+    this.restoreHandlers();
   }
 
   reset(event) {
@@ -187,7 +187,7 @@ export default class EventEdit extends SmartView {
         this.getElement().querySelectorAll(`.event__input--time`)[0],
         {
           enableTime: true,
-          dateFormat: `Y-m-d H:i`,
+          dateFormat: `d/m/y H:i`,
           defaultDate: this._data.startTime,
           onChange: this._dateChangeHandler
         }
@@ -198,7 +198,7 @@ export default class EventEdit extends SmartView {
         this.getElement().querySelectorAll(`.event__input--time`)[1],
         {
           enableTime: true,
-          dateFormat: `Y-m-d H:i`,
+          dateFormat: `d/m/y H:i`,
           defaultDate: this._data.endTime,
           onChange: this._dateChangeHandler
         }
