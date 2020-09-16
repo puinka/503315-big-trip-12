@@ -1,6 +1,9 @@
 import {DESTINATIONS, EVENT_TYPES} from "../const.js";
-import {humanizeTime} from "../utils/event.js";
+import {getFormatedDate} from "../utils/event.js";
 import SmartView from "./smart.js";
+import flatpickr from "flatpickr";
+
+import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 
 const BLANK_EVENT = {
   type: `Bus`,
@@ -63,17 +66,9 @@ const createTypeItemsListTemplate = (types, event) => {
   return typeItemsList;
 };
 
-const getFormatedDate = (date) => {
-  const day = date.toLocaleString(`en-US`, {day: `numeric`}).padStart(2, `0`);
-  const month = date.toLocaleString(`en-US`, {month: `numeric`}).padStart(2, `0`);
-  const year = date.toLocaleString(`en-US`, {year: `2-digit`});
-
-  return `${day}/${month}/${year}`;
-
-};
 
 const createEventEditTemplate = (data) => {
-  const {type, description, offers, price, startTime, endTime, isFavorite} = data;
+  const {type, description, destination, offers, price, startTime, endTime, isFavorite} = data;
   const preposition = [`Check-in`, `Sightseeing`, `Restaurant`].includes(type) ? `in` : `to`;
 
   return (
@@ -108,7 +103,7 @@ const createEventEditTemplate = (data) => {
           <label class="event__label  event__type-output" for="event-destination-1">
             ${type} ${preposition}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
+          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
             ${createDestinationsListTemplate(DESTINATIONS)}
         </div>
 
@@ -116,12 +111,12 @@ const createEventEditTemplate = (data) => {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getFormatedDate(startTime)} ${humanizeTime(startTime)}">
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getFormatedDate(startTime)}">
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getFormatedDate(endTime)} ${humanizeTime(endTime)}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getFormatedDate(endTime)}">
         </div>
 
         <div class="event__field-group  event__field-group--price">
@@ -163,11 +158,14 @@ export default class EventEdit extends SmartView {
   constructor(event = BLANK_EVENT) {
     super();
     this._data = event;
-
+    this._datepicker = null;
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
 
+    this._dateChangeHandler = this._dateChangeHandler.bind(this);
+
     this._setFavoriteClickHandler();
+    this.restoreHandlers();
   }
 
   reset(event) {
@@ -176,6 +174,44 @@ export default class EventEdit extends SmartView {
 
   getTemplate() {
     return createEventEditTemplate(this._data);
+  }
+
+  _setDatepicker() {
+    if (this._datepicker) {
+      this._datepicker.forEach((item) => item.destroy());
+      this._datepicker = null;
+    }
+
+
+    const startCal = flatpickr(
+        this.getElement().querySelectorAll(`.event__input--time`)[0],
+        {
+          enableTime: true,
+          dateFormat: `d/m/y H:i`,
+          defaultDate: this._data.startTime,
+          onChange: this._dateChangeHandler
+        }
+    );
+
+
+    const endCal = flatpickr(
+        this.getElement().querySelectorAll(`.event__input--time`)[1],
+        {
+          enableTime: true,
+          dateFormat: `d/m/y H:i`,
+          defaultDate: this._data.endTime,
+          onChange: this._dateChangeHandler
+        }
+    );
+
+    this._datepicker = [startCal, endCal];
+  }
+
+  _dateChangeHandler([userDate]) {
+
+    this.updateData({
+      dueDate: userDate
+    });
   }
 
 
@@ -202,6 +238,7 @@ export default class EventEdit extends SmartView {
   restoreHandlers() {
     this._setFavoriteClickHandler();
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this._setDatepicker();
   }
 
 }
