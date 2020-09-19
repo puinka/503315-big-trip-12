@@ -34,4 +34,4 @@ render(siteControlsElement, new SiteMenuView().getElement(), RenderPosition.BEFO
 render(siteControlsElement, new SiteFilterView().getElement(), RenderPosition.BEFOREEND);
 
 const tripPresenter = new TripPresenter(pageMain, eventsModel);
-tripPresenter.init(events);
+tripPresenter.init();

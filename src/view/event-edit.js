@@ -164,8 +164,8 @@ export default class EventEdit extends SmartView {
 
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
-    this._setFavoriteClickHandler();
-    this.restoreHandlers();
+    //this._setFavoriteClickHandler();
+    //this.restoreHandlers();
   }
 
   reset(event) {

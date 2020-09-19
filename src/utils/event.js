@@ -33,3 +33,15 @@ export const getFormatedDate = (date) => {
   return moment(date).format(`DD/MM/YY HH:mm`);
 
 };
+
+export const sortByDefault = (eventA, eventB) => {
+  return eventA.startTime - eventB.startTime;
+};
+
+export const sortByTime = (eventA, eventB) => {
+  console.log(taskA + ` sort by Events ` + taskB);
+};
+
+export const sortByPrice = (eventA, eventB) => {
+  console.log(taskA + ` sort by Events ` + taskB);
+};
