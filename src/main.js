@@ -4,6 +4,7 @@ import TripInfoContainerView from "./view/trip-info-container.js";
 import TripSummaryView from "./view/trip-summary.js";
 import TripTotalPriceView from "./view/total-price.js";
 import TripPresenter from "./presenter/trip.js";
+import EventsModel from "./model/events-model.js";
 import {generateData} from "./mock/event.js";
 import {render, RenderPosition} from "./utils/render.js";
 
@@ -11,6 +12,9 @@ const EVENT_COUNT = 20;
 
 
 const events = generateData(EVENT_COUNT);
+
+const eventsModel = new EventsModel();
+eventsModel.setEvents(events);
 
 const totalPrice = events.reduce((accumulator, currentValue) => accumulator + currentValue.price, 0);
 
@@ -29,5 +33,5 @@ render(tripInfoContainerComponent.getElement(), new TripTotalPriceView(totalPric
 render(siteControlsElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
 render(siteControlsElement, new SiteFilterView().getElement(), RenderPosition.BEFOREEND);
 
-const tripPresenter = new TripPresenter(pageMain);
+const tripPresenter = new TripPresenter(pageMain, eventsModel);
 tripPresenter.init(events);

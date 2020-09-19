@@ -10,9 +10,9 @@ import {render, RenderPosition} from "../utils/render.js";
 
 
 export default class Trip {
-  constructor(tripContainer) {
+  constructor(tripContainer, eventsModel) {
     this._tripContainer = tripContainer;
-
+    this._eventsModel = eventsModel;
     this._eventPresenter = {};
 
     this._tripComponent = new TripView();
@@ -32,6 +32,10 @@ export default class Trip {
     render(this._tripContainer, this._tripComponent, RenderPosition.BEFOREEND);
 
     this._renderTrip();
+  }
+
+  _getEvents() {
+    return this._eventsModel.getEvents();
   }
 
   _handleModeChange() {
