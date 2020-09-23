@@ -7,7 +7,7 @@ import EventPresenter from "./event.js";
 import {sortByDefault, sortByTime, sortByPrice} from "../utils/event.js";
 import {SortType, UpdateType, UserAction} from "../const.js";
 
-import {render, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition, remove} from "../utils/render.js";
 
 
 export default class Trip {
@@ -40,6 +40,7 @@ export default class Trip {
   }
 
   _getEvents() {
+
     switch (this._currentSortType) {
       case SortType.DURATION:
         return this._eventsModel.getEvents().slice().sort(sortByTime);
@@ -80,37 +81,9 @@ export default class Trip {
         this._renderTrip();
         break;
       case UpdateType.MAJOR:
-        this._clearTrip(resetSortType: true);
+        this._clearTrip({resetSortType: true});
         this._renderTrip();
         break;
-    }
-  }
-
-  _renderSort() {
-
-    if (this._sortComponent !== null) {
-      this._sortComponent = null;
-    }
-
-    this._sortComponent = new SortView(this._currentSortType);
-    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
-
-    render(this._tripComponent, this._sortComponent, RenderPosition.BEFOREEND);
-  }
-
-  _clearTrip({resetSortType = false} = {}) {
-    const taskCount = this._getTasks().length;
-
-    Object
-      .values(this._eventPresenter)
-      .forEach((presenter) => presenter.destroy());
-    this._eventPresenter = {};
-
-    remove(this._sortComponent);
-    remove(this._noEventComponent);
-
-    if (resetSortType) {
-      this._currentSortType = SortType.EVENT;
     }
   }
 
@@ -120,10 +93,40 @@ export default class Trip {
     }
 
     this._currentSortType = sortType;
-    // очистить лист ивентов и отрисовать заново
     this._clearTrip();
     this._renderTrip();
   }
+
+  _renderSort() {
+
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
+    this._sortComponent = new SortView(this._currentSortType);
+    //здесь
+
+    render(this._tripComponent, this._sortComponent, RenderPosition.BEFOREEND);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+  }
+
+  _clearTrip({resetSortType = false} = {}) {
+
+    Object
+      .values(this._eventPresenter)
+      .forEach((presenter) => presenter.destroy());
+
+    this._eventPresenter = {};
+
+    remove(this._sortComponent);
+    remove(this._noEventComponent);
+    remove(this._daysContainer);
+
+    if (resetSortType) {
+      this._currentSortType = SortType.EVENT;
+    }
+  }
+
 
   _renderEvent(currentDay, event) {
     const eventPresenter = new EventPresenter(currentDay, this._handleViewAction, this._handleModeChange);
@@ -163,6 +166,17 @@ export default class Trip {
     }
   }
 
+  _renderSortedEventsList(sortedEvents) {
+    const newDay = new DayView().getElement();
+    render(this._daysContainer, newDay, RenderPosition.BEFOREEND);
+
+    const dayEventsContainer = newDay.querySelector(`.trip-events__list`);
+
+    sortedEvents.forEach((element) => {
+      this._renderEvent(dayEventsContainer, element);
+    });
+  }
+
   _renderNoEvent() {
     render(this._tripComponent, this._noEventComponent, RenderPosition.BEFOREEND);
   }
@@ -190,10 +204,13 @@ export default class Trip {
 
     if (this._currentSortType === SortType.EVENT) {
       this._renderDays(events);
+    } else {
+      console.log(`sort works`);
+      // здесь отрендерить простой список ивентов, отсортированных по длительности или цене
+      this._renderSortedEventsList(events);
     }
 
-    // здесь отрендерить простой список ивентов, отсортированных по длительности или цене
-    events.forEach((event) => this._renderEvent(event));
+
   }
 
 }

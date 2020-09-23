@@ -1,4 +1,5 @@
 import AbstractView from "./abstract.js";
+import { SortType } from "../const.js";
 
 const createSortTemplate = (currentSortType) => {
   return (
@@ -6,19 +7,19 @@ const createSortTemplate = (currentSortType) => {
         <span class="trip-sort__item  trip-sort__item--day"></span>
 
         <div class="trip-sort__item  trip-sort__item--event">
-          <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event">
+          <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" ${currentSortType === SortType.EVENT ? `checked` : ``} data-sort-type="${SortType.EVENT}">
           <label class="trip-sort__btn" for="sort-event">Event</label>
         </div>
 
         <div class="trip-sort__item  trip-sort__item--time">
-          <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time" checked>
+          <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time" ${currentSortType === SortType.TIME ? `checked` : ``} data-sort-type="${SortType.TIME}">
           <label class="trip-sort__btn  trip-sort__btn--active  trip-sort__btn--by-increase" for="sort-time">
             Time
           </label>
         </div>
 
         <div class="trip-sort__item  trip-sort__item--price">
-          <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price">
+          <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price" ${currentSortType === SortType.PRICE ? `checked` : ``} data-sort-type="${SortType.PRICE}">
           <label class="trip-sort__btn" for="sort-price">
             Price
           </label>
@@ -35,8 +36,8 @@ export default class Sort extends AbstractView {
     super();
 
     this._currentSortType = currentSortType;
-
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
+
   }
 
   getTemplate() {
@@ -44,7 +45,16 @@ export default class Sort extends AbstractView {
   }
 
   _sortTypeChangeHandler(evt) {
-    console.log(`Type Change Handler`)
+    if (evt.target.tagName !== `INPUT`) {
+      return;
+    }
+    evt.preventDefault();
+    this._callback.sortTypeChange(evt.target.dataset.SortType);
   }
 
+  setSortTypeChangeHandler(callback) {
+    this._callback.sortTypeChange = callback;
+    this.getElement().addEventListener(`change`, this._sortTypeChangeHandler);
+  }
 }
+

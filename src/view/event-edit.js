@@ -165,7 +165,19 @@ export default class EventEdit extends SmartView {
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
     //this._setFavoriteClickHandler();
-    //this.restoreHandlers();
+    this.restoreHandlers();
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this._datepicker) {
+      Object.values(this._datepicker).forEach((item) => {
+        item.destroy();
+      });
+
+      this._datepicker = null;
+    }
   }
 
   reset(event) {

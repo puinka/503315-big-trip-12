@@ -1,14 +1,19 @@
 import AbstractView from "./abstract.js";
 import {humanizeDay} from "../utils/event.js";
+import moment from "moment";
 
-const createDayItemTemplate = (date, dayNumber) => {
+const createDayItemTemplate = (date = null, dayNumber = null) => {
   const dateString = humanizeDay(date);
+  const dateTime = moment(date).format(`YYYY-MM-DD`);
+  const dayInfoTemplate = dayNumber ? `<div class="day__info">
+                            <span class="day__counter">${dayNumber}</span>
+                            <time class="day__date" datetime="${dateTime}">${dateString}</time>
+                          </div>` : ``;
 
-  return (`<li class="trip-days__item  day" id="day-${dayNumber}">
-  <div class="day__info">
-    <span class="day__counter">${dayNumber}</span>
-    <time class="day__date" datetime="2019-03-18">${dateString}</time>
-  </div>
+  const dayId = dayNumber ? `id="day-${dayNumber}"` : ``;
+
+  return (`<li class="trip-days__item  day" ${dayId}>
+  ${dayInfoTemplate}
   <ul class="trip-events__list">
   </ul>
 </li>`);

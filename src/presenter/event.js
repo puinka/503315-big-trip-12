@@ -2,6 +2,7 @@ import EventView from "../view/event-item.js";
 import EventEditView from "../view/event-edit.js";
 import {render, RenderPosition, replace, remove} from "../utils/render.js";
 import {UserAction, UpdateType} from "../const.js";
+import {isEqual} from "../utils/event.js";
 
 
 const Mode = {
@@ -92,6 +93,14 @@ export default class Event {
     this._replaceEventToEdit();
   }
 
+  _handleDeleteClick(event) {
+    this._changeData(
+        UserAction.DELETE_EVENT,
+        UpdateType.MINOR,
+        event
+    );
+  }
+
   _handleFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_EVENT,
@@ -107,9 +116,13 @@ export default class Event {
   }
 
 
-  _handleFormSubmit(event) {
-    this._changeData(UserAction.UPDATE_EVENT, UpdateType.MINOR, event);
+  _handleFormSubmit(update) {
+
+    const isMinorUpdate = isEqual(this._event.price, update.price) || isEqual(this._event.startTime, update.startTime) || isEqual(this._event.endTime, update.endTime);
+
+    this._changeData(UserAction.UPDATE_EVENT, isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH, update);
     this._replaceEditToEvent();
   }
+
 
 }

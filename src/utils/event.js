@@ -34,14 +34,21 @@ export const getFormatedDate = (date) => {
 
 };
 
+// remove this
 export const sortByDefault = (eventA, eventB) => {
   return eventA.startTime - eventB.startTime;
 };
 
 export const sortByTime = (eventA, eventB) => {
-  console.log(taskA + ` sort by Events ` + taskB);
+  // sort by duration
+  return eventB.startTime - eventA.startTime;
 };
 
 export const sortByPrice = (eventA, eventB) => {
-  console.log(taskA + ` sort by Events ` + taskB);
+  return eventB.price - eventA.price;
 };
+
+export const isEqual = (itemA, itemB) => {
+  return (itemA === itemB) ? true : false;
+};
+
