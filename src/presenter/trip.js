@@ -6,14 +6,16 @@ import DayView from "../view/day-item.js";
 import EventPresenter from "./event.js";
 import {sortByDefault, sortByTime, sortByPrice} from "../utils/event.js";
 import {SortType, UpdateType, UserAction} from "../const.js";
+import {filter} from "../utils/filter.js";
 
 import {render, RenderPosition, remove} from "../utils/render.js";
 
 
 export default class Trip {
-  constructor(tripContainer, eventsModel) {
+  constructor(tripContainer, eventsModel, filterModel) {
     this._tripContainer = tripContainer;
     this._eventsModel = eventsModel;
+    this._filterModel = filterModel;
     this._eventPresenter = {};
 
     this._currentSortType = SortType.EVENT;
@@ -29,6 +31,7 @@ export default class Trip {
 
 
     this._eventsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
 
   }
 
@@ -40,6 +43,9 @@ export default class Trip {
   }
 
   _getEvents() {
+    const filterType = this._filterModel.getFilter();
+    const events = this._tasksModel.getEvents();
+    const filteredEvents = filter[filterType](events);
 
     switch (this._currentSortType) {
       case SortType.DURATION:
@@ -47,7 +53,7 @@ export default class Trip {
       case SortType.PRICE:
         return this._eventsModel.getEvents().slice().sort(sortByPrice);
     }
-    return this._eventsModel.getEvents().slice().sort(sortByDefault);
+    return filteredEvents.sort(sortByDefault);
   }
 
   _handleModeChange() {
