@@ -44,7 +44,7 @@ export default class Trip {
 
   _getEvents() {
     const filterType = this._filterModel.getFilter();
-    const events = this._tasksModel.getEvents();
+    const events = this._eventsModel.getEvents();
     const filteredEvents = filter[filterType](events);
 
     switch (this._currentSortType) {
