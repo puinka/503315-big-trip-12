@@ -28,6 +28,7 @@ export default class Trip {
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
 
     this._eventsModel.addObserver(this._handleModelEvent);
@@ -39,8 +40,12 @@ export default class Trip {
 
     render(this._tripContainer, this._tripComponent, RenderPosition.BEFOREEND);
 
+    this._eventsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
     this._renderTrip();
   }
+
 
   _getEvents() {
     const filterType = this._filterModel.getFilter();
@@ -49,11 +54,11 @@ export default class Trip {
 
     switch (this._currentSortType) {
       case SortType.DURATION:
-        return this._eventsModel.getEvents().slice().sort(sortByTime);
+        return filteredEvents.sort(sortByTime);
       case SortType.PRICE:
-        return this._eventsModel.getEvents().slice().sort(sortByPrice);
+        return filteredEvents.sort(sortByPrice);
     }
-    return filteredEvents.sort(sortByDefault);
+    return filteredEvents;
   }
 
   _handleModeChange() {
@@ -110,7 +115,6 @@ export default class Trip {
     }
 
     this._sortComponent = new SortView(this._currentSortType);
-    //здесь
 
     render(this._tripComponent, this._sortComponent, RenderPosition.BEFOREEND);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
@@ -172,48 +176,49 @@ export default class Trip {
     }
   }
 
-  _renderSortedEventsList(sortedEvents) {
-    const newDay = new DayView().getElement();
-    render(this._daysContainer, newDay, RenderPosition.BEFOREEND);
-
-    const dayEventsContainer = newDay.querySelector(`.trip-events__list`);
-
-    sortedEvents.forEach((element) => {
-      this._renderEvent(dayEventsContainer, element);
-    });
-  }
-
   _renderNoEvent() {
     render(this._tripComponent, this._noEventComponent, RenderPosition.BEFOREEND);
   }
 
   _renderTrip() {
 
-    const eventCount = this._getEvents().length;
+    const events = this._getEvents();
 
 
-    if (eventCount === 0) {
+    if (events.length === 0) {
       this._renderNoEvent();
       return;
     }
 
     this._renderSort();
-
-    this._renderDaysContainer();
-    this._renderEvents();
+    this._renderEventsList();
 
   }
 
-  _renderEvents() {
+  _renderSortedEventsList() {
+
+    const day = new DayView().getElement();
+    render(this._daysContainer, day, RenderPosition.BEFOREEND);
+
+    const sortedEvents = this._getEvents();
+    const container = day.querySelector(`.trip-events__list`);
+    sortedEvents.forEach((element) => {
+      this._renderEvent(container, element);
+    });
+  }
+
+  _renderEventsList() {
 
     const events = this._getEvents();
+    this._renderDaysContainer();
 
     if (this._currentSortType === SortType.EVENT) {
       this._renderDays(events);
     } else {
-      console.log(`sort works`);
-      // здесь отрендерить простой список ивентов, отсортированных по длительности или цене
+
+
       this._renderSortedEventsList(events);
+
     }
 
 

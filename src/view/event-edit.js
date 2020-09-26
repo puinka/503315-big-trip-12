@@ -159,13 +159,13 @@ export default class EventEdit extends SmartView {
     super();
     this._data = event;
     this._datepicker = null;
+
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
-
     this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
-    //this._setFavoriteClickHandler();
-    this.restoreHandlers();
+    this._setInnerHandlers();
+    this._setDatepicker();
   }
 
   removeElement() {
@@ -237,20 +237,39 @@ export default class EventEdit extends SmartView {
     this.getElement().addEventListener(`submit`, this._formSubmitHandler);
   }
 
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
+  }
+
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
     this.updateData({isFavorite: !this._data.isFavorite});
   }
 
-  _setFavoriteClickHandler() {
-    this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
-  }
 
   restoreHandlers() {
-    this._setFavoriteClickHandler();
+    this._setInnerHandlers();
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
     this._setDatepicker();
+  }
+
+  _setInnerHandlers() {
+    this.getElement().querySelector(`.event__type-list`).addEventListener(`change`, this._eventTypeChangeHandler);
+    this.getElement().querySelector(`.event__input--destination`).addEventListener(`change`, this._destinationChangeClickHandler);
+  }
+
+  _eventTypeChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      type: evt.target.dataset.type
+    });
+  }
+
+  _destinationChangeClickHandler() {
+
   }
 
 }

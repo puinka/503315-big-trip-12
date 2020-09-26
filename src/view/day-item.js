@@ -3,12 +3,13 @@ import {humanizeDay} from "../utils/event.js";
 import moment from "moment";
 
 const createDayItemTemplate = (date = null, dayNumber = null) => {
-  const dateString = humanizeDay(date);
-  const dateTime = moment(date).format(`YYYY-MM-DD`);
-  const dayInfoTemplate = dayNumber ? `<div class="day__info">
-                            <span class="day__counter">${dayNumber}</span>
+  const dayNumberString = dayNumber ? dayNumber : ``;
+  const dateString = dayNumber ? humanizeDay(date) : ``;
+  const dateTime = dayNumber ? moment(date).format(`YYYY-MM-DD`) : ``;
+  const dayInfoTemplate = `<div class="day__info">
+                            <span class="day__counter">${dayNumberString}</span>
                             <time class="day__date" datetime="${dateTime}">${dateString}</time>
-                          </div>` : ``;
+                          </div>`;
 
   const dayId = dayNumber ? `id="day-${dayNumber}"` : ``;
 
