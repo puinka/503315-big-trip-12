@@ -99,6 +99,7 @@ export default class Trip {
   }
 
   _handleSortTypeChange(sortType) {
+
     if (this._currentSortType === sortType) {
       return;
     }
@@ -106,6 +107,7 @@ export default class Trip {
     this._currentSortType = sortType;
     this._clearTrip();
     this._renderTrip();
+
   }
 
   _renderSort() {
@@ -114,10 +116,11 @@ export default class Trip {
       this._sortComponent = null;
     }
 
-    this._sortComponent = new SortView(this._currentSortType);
-
-    render(this._tripComponent, this._sortComponent, RenderPosition.BEFOREEND);
+    this._sortComponent = new SortView(this._currentSortType, SortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+    render(this._tripComponent, this._sortComponent, RenderPosition.BEFOREEND);
+
+
   }
 
   _clearTrip({resetSortType = false} = {}) {
@@ -184,7 +187,6 @@ export default class Trip {
 
     const events = this._getEvents();
 
-
     if (events.length === 0) {
       this._renderNoEvent();
       return;
@@ -192,7 +194,6 @@ export default class Trip {
 
     this._renderSort();
     this._renderEventsList();
-
   }
 
   _renderSortedEventsList() {
